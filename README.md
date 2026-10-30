@@ -134,7 +134,7 @@ Prompts and responses are the most useful and most sensitive part of LLM telemet
 The [content capture guidance](https://github.com/open-telemetry/semantic-conventions-genai/blob/main/docs/gen-ai/gen-ai-spans.md#full-buffered-content) lists three patterns: record no content, record content on span attributes, or store content externally and keep references on the spans. Production systems usually combine them with these controls:
 
 - **Metadata-only mode.** Tokens, cost, latency, errors, and identity answer most operational questions at far lower risk.
-- **Redaction before storage.** Detect and mask personal data and secrets before content reaches logs or exporters. [Sensitive information disclosure](https://genai.owasp.org/llmrisk/llm022025-sensitive-information-disclosure/) is one of the OWASP Top 10 risks for LLM applications, and telemetry stores are a common place for it to leak.
+- **Redaction before storage.** Detect and mask personal data and secrets before content reaches logs or exporters. [Sensitive information disclosure](https://genai.owasp.org/llmrisk/llm022025-sensitive-information-disclosure/#:~:text=Sensitive%20information%20can%20affect%20both%20the%20LLM%20and%20its%20application%20context) is one of the OWASP Top 10 risks for LLM applications, and telemetry stores are a common place for it to leak.
 - **Data location.** Self-hosted capture and storage keep prompts, responses, and logs inside your own network instead of a vendor's.
 - **Access control.** Separate permission to view metrics from permission to read raw prompts and responses.
 - **Retention limits.** Keep content for days or weeks and aggregated metrics longer.
@@ -158,11 +158,11 @@ The projects below capture at the gateway, instrument application code, or provi
 
 | Project | Language, license | Approach | OpenTelemetry | What it captures | Deployment |
 |---|---|---|---|---|---|
-| [Bifrost](https://github.com/maximhq/bifrost) | Go, Apache 2.0 | AI gateway that records every request routed through it, with no application code changes | Exports OTLP traces and metrics over HTTP or gRPC in the GenAI semantic conventions format; Prometheus `/metrics` | Model calls with tokens, cost, and latency; tool execution; A2A agent operations; its own per-request overhead | Self-hosted; request logs in SQLite or PostgreSQL |
-| [Langfuse](https://github.com/langfuse/langfuse) | TypeScript, MIT except the `ee/` directories | Tracing and evaluation platform; applications send traces through SDKs or the API | Repository includes an OTLP ingestion endpoint | Traces, prompt management, evaluations, datasets | Self-hosted with Docker Compose or Kubernetes (Helm); built on ClickHouse |
-| [OpenLLMetry](https://github.com/traceloop/openllmetry) | Python, Apache 2.0 | Instrumentation libraries and SDK built on OpenTelemetry | Standard OpenTelemetry instrumentations that export to any OpenTelemetry backend or collector | LLM provider calls, vector databases, and frameworks | Python package (`traceloop-sdk`) |
-| [Arize Phoenix](https://github.com/Arize-ai/phoenix) | Python, Elastic License 2.0 (source-available) | Tracing and evaluation application with OpenInference auto-instrumentation | OpenTelemetry-based instrumentation | Traces and evaluations | `pip`, Docker, or Kubernetes (Helm) |
-| [OpenLIT](https://github.com/openlit/openlit) | TypeScript, Apache 2.0 | OpenTelemetry-native platform with SDK auto-instrumentation | OTLP endpoint; OpenTelemetry-native tracing | LLM calls, tool calls, MCP requests, agent steps, cost, and GPU usage | Self-hosted with Docker Compose; Python SDK (`openlit`) |
+| [Bifrost](https://github.com/maximhq/bifrost/blob/dev/docs/features/observability/default.mdx) | Go, Apache 2.0 | AI gateway that records every request routed through it, with no application code changes | Exports OTLP traces and metrics over HTTP or gRPC in the GenAI semantic conventions format; Prometheus `/metrics` | Model calls with tokens, cost, and latency; tool execution; A2A agent operations; its own per-request overhead | Self-hosted; request logs in SQLite or PostgreSQL |
+| [Langfuse](https://github.com/langfuse/langfuse#-core-features) | TypeScript, MIT except the `ee/` directories | Tracing and evaluation platform; applications send traces through SDKs or the API | Repository includes an OTLP ingestion endpoint | Traces, prompt management, evaluations, datasets | Self-hosted with Docker Compose or Kubernetes (Helm); built on ClickHouse |
+| [OpenLLMetry](https://github.com/traceloop/openllmetry#-what-do-we-instrument) | Python, Apache 2.0 | Instrumentation libraries and SDK built on OpenTelemetry | Standard OpenTelemetry instrumentations that export to any OpenTelemetry backend or collector | LLM provider calls, vector databases, and frameworks | Python package (`traceloop-sdk`) |
+| [Arize Phoenix](https://github.com/Arize-ai/phoenix#trace-your-application) | Python, Elastic License 2.0 (source-available) | Tracing and evaluation application with OpenInference auto-instrumentation | OpenTelemetry-based instrumentation | Traces and evaluations | `pip`, Docker, or Kubernetes (Helm) |
+| [OpenLIT](https://github.com/openlit/openlit#-opentelemetry-native-genai-semantic-conventions) | TypeScript, Apache 2.0 | OpenTelemetry-native platform with SDK auto-instrumentation | OTLP endpoint; OpenTelemetry-native tracing | LLM calls, tool calls, MCP requests, agent steps, cost, and GPU usage | Self-hosted with Docker Compose; Python SDK (`openlit`) |
 
 Details reflect each repository in October 2026; confirm current capabilities in each project's documentation before choosing.
 
@@ -173,7 +173,7 @@ Bifrost's request logging, OTLP export, and Prometheus metrics are in its open-s
 - [How an LLM gateway works](https://github.com/ai-gateways/llm-gateway#how-an-llm-gateway-works): the request pipeline where gateway-layer capture happens
 - [Observability for multi-agent workflows](https://github.com/ai-gateways/agent-gateway#observability-for-multi-agent-workflows): joining agent, model, and tool calls into one session
 - [How to evaluate an MCP gateway](https://github.com/ai-gateways/mcp-gateway#how-to-evaluate-an-mcp-gateway): audit and tracing requirements for tool calls
-- [AI gateway](https://github.com/ai-gateways/ai-gateway): how LLM, MCP, and agent gateways fit together
-- [AI governance](https://github.com/ai-gateways/ai-governance): budgets, access control, and audit built on this telemetry
-- [AI guardrails](https://github.com/ai-gateways/ai-guardrails): redaction and content checks applied before data is stored
+- [The three kinds of AI traffic](https://github.com/ai-gateways/ai-gateway#the-three-kinds-of-ai-traffic): how LLM, MCP, and agent gateways fit together
+- [Audit logs and compliance mapping](https://github.com/ai-gateways/ai-governance#audit-logs-and-compliance-mapping): turning request logs into compliance evidence
+- [Guardrail actions](https://github.com/ai-gateways/ai-guardrails#guardrail-actions): redaction and content checks applied before data is stored
 - [AI Gateways](https://github.com/ai-gateways): all guides in this organization
