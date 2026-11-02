@@ -176,4 +176,5 @@ Bifrost's request logging, OTLP export, and Prometheus metrics are in its open-s
 - [The three kinds of AI traffic](https://github.com/ai-gateways/ai-gateway#the-three-kinds-of-ai-traffic): how LLM, MCP, and agent gateways fit together
 - [Audit logs and compliance mapping](https://github.com/ai-gateways/ai-governance#audit-logs-and-compliance-mapping): turning request logs into compliance evidence
 - [Guardrail actions](https://github.com/ai-gateways/ai-guardrails#guardrail-actions): redaction and content checks applied before data is stored
+- [Awesome AI Gateways](https://github.com/ai-gateways/awesome-ai-gateways#ai-gateways): a curated list of open-source and commercial AI gateways, the layer that can log and trace every model call
 - [AI Gateways](https://github.com/ai-gateways): all guides in this organization
